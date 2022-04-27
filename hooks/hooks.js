@@ -12,7 +12,7 @@ module.exports.pre = async (event, context, callback) => {
 
   // Perform validation of the newly deployed Lambda version
   var lambdaParams = {
-    FunctionName: "OrderFn",
+    FunctionName: "OrderFn:4",
     InvocationType: "RequestResponse"
   };
 
