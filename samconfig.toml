@@ -6,7 +6,6 @@ stack_name = "canary-deploy-sam-repeat"
 s3_bucket = "hooksbucket"
 s3_prefix = "canary-deploy-sam-repeat"
 region = "ap-south-1"
-profile = "personal"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 disable_rollback = false
