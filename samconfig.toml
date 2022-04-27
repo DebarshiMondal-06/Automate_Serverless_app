@@ -3,9 +3,8 @@ version = 0.1
 [default.deploy]
 [default.deploy.parameters]
 stack_name = "canary-deploy-sam-repeat"
-s3_bucket = "codedeploy-automate-bucket-webinar"
+s3_bucket = "codedeploy-automate-bucket-webinar-live"
 s3_prefix = "canary-deploy-sam-repeat"
-region = "ap-south-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 disable_rollback = false
