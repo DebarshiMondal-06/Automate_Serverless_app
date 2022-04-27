@@ -15,14 +15,31 @@ Resources:
         Type: Linear10PercentEvery1Minute 
         Alarms:
           - !Ref CloudWatchAlarm
-        # Hooks:
-        #   PreTraffic: !Ref HooksLambda
       Events:
         OrderRestAPI:
           Type: Api
           Properties:
             Method: GET
             Path: /
+
+
+  CloudWatchAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      ActionsEnabled: true
+      AlarmName: lambda-cloudwatch-alarm
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Minimum
+      Threshold: 1
+      DatapointsToAlarm: 1
+      Period: 30
+
+
+
+
 
   # HooksLambda:
   #   Type: AWS::Serverless::Function
@@ -51,18 +68,3 @@ Resources:
   #           - Effect: Allow
   #             Action: "*"
   #             Resource: "*"
-
-
-  CloudWatchAlarm:
-    Type: 'AWS::CloudWatch::Alarm'
-    Properties:
-      ActionsEnabled: true
-      AlarmName: lambda-cloudwatch-alarm
-      ComparisonOperator: GreaterThanOrEqualToThreshold
-      EvaluationPeriods: 1
-      MetricName: Errors
-      Namespace: AWS/Lambda
-      Statistic: Minimum
-      Threshold: 1
-      DatapointsToAlarm: 1
-      Period: 30
