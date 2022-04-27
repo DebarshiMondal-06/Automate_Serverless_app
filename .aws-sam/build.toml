@@ -8,6 +8,6 @@ architecture = "x86_64"
 handler = "orders.handler"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["MyLambdaFunction", "HooksLambda"]
+functions = ["MyLambdaFunction"]
 
 [layer_build_definitions]

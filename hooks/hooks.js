@@ -4,7 +4,7 @@ var lambda = new aws.Lambda();
 
 
 module.exports.pre = async (event, context, callback) => {
-  console.log("Entering PreTraffic Hook!");
+  console.log("Entering PreTraffic Hook...");
 
   let deploymentId = event.DeploymentId;
   let lifecycleEventHookExecutionId = event.LifecycleEventHookExecutionId;

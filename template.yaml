@@ -15,23 +15,28 @@ Resources:
         Type: Linear10PercentEvery1Minute 
         Alarms:
           - !Ref CloudWatchAlarm
-        Hooks:
-          PreTraffic: !Ref HooksLambda
-        #   PostTraffic: !Ref HooksLambdaPost
+        # Hooks:
+        #   PreTraffic: !Ref HooksLambda
+      Events:
+        OrderRestAPI:
+          Type: Api
+          Properties:
+            Method: GET
+            Path: /
 
-  HooksLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: hooks.pre
-      Runtime: nodejs12.x
-      CodeUri: functions
-      Policies:
-        - AWSLambdaExecute
-        - Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action: "*"
-              Resource: "*"
+  # HooksLambda:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: hooks.pre
+  #     Runtime: nodejs12.x
+  #     CodeUri: functions
+  #     Policies:
+  #       - AWSLambdaExecute
+  #       - Version: "2012-10-17"
+  #         Statement:
+  #           - Effect: Allow
+  #             Action: "*"
+  #             Resource: "*"
   
   # HooksLambdaPost:
   #   Type: AWS::Serverless::Function
@@ -60,4 +65,4 @@ Resources:
       Statistic: Minimum
       Threshold: 1
       DatapointsToAlarm: 1
-      Period: 60
+      Period: 30

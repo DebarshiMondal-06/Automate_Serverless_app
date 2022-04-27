@@ -14,26 +14,14 @@ Resources:
         Type: Linear10PercentEvery1Minute
         Alarms:
         - Ref: CloudWatchAlarm
-        Hooks:
-          PreTraffic:
-            Ref: HooksLambda
+      Events:
+        OrderRestAPI:
+          Type: Api
+          Properties:
+            Method: GET
+            Path: /
     Metadata:
       SamResourceId: MyLambdaFunction
-  HooksLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: hooks.pre
-      Runtime: nodejs12.x
-      CodeUri: HooksLambda
-      Policies:
-      - AWSLambdaExecute
-      - Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Action: '*'
-          Resource: '*'
-    Metadata:
-      SamResourceId: HooksLambda
   CloudWatchAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -46,4 +34,4 @@ Resources:
       Statistic: Minimum
       Threshold: 1
       DatapointsToAlarm: 1
-      Period: 60
+      Period: 30

@@ -2,9 +2,9 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "canary-deploy-sam-v2"
+stack_name = "canary-deploy-sam-repeat"
 s3_bucket = "hooksbucket"
-s3_prefix = "canary-deploy-sam-v2"
+s3_prefix = "canary-deploy-sam-repeat"
 region = "ap-south-1"
 profile = "personal"
 confirm_changeset = true
