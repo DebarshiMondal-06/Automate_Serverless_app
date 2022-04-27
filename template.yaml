@@ -15,13 +15,14 @@ Resources:
         Type: Linear10PercentEvery1Minute 
         Alarms:
           - !Ref CloudWatchAlarm
+        # Hooks:
+        #   PreTraffic: !Ref HooksLambda
       Events:
         OrderRestAPI:
           Type: Api
           Properties:
             Method: GET
             Path: /
-
 
   CloudWatchAlarm:
     Type: 'AWS::CloudWatch::Alarm'
@@ -39,14 +40,12 @@ Resources:
 
 
 
-
-
   # HooksLambda:
   #   Type: AWS::Serverless::Function
   #   Properties:
   #     Handler: hooks.pre
   #     Runtime: nodejs12.x
-  #     CodeUri: functions
+  #     CodeUri: hooks
   #     Policies:
   #       - AWSLambdaExecute
   #       - Version: "2012-10-17"
