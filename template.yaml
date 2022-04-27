@@ -15,8 +15,8 @@ Resources:
         Type: Linear10PercentEvery1Minute 
         Alarms:
           - !Ref CloudWatchAlarm
-        # Hooks:
-        #   PreTraffic: !Ref HooksLambda
+        Hooks:
+          PreTraffic: !Ref HooksLambda
       Events:
         OrderRestAPI:
           Type: Api
