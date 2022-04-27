@@ -15,8 +15,8 @@ Resources:
         Type: Linear10PercentEvery1Minute 
         Alarms:
           - !Ref CloudWatchAlarm
-        Hooks:
-          PreTraffic: !Ref HooksLambda
+        # Hooks:
+        #   PreTraffic: !Ref HooksLambda
       Events:
         OrderRestAPI:
           Type: Api
@@ -54,7 +54,7 @@ Resources:
               Action: "*"
               Resource: "*"
 
-              
+
   
   # HooksLambdaPost:
   #   Type: AWS::Serverless::Function
