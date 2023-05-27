@@ -14,6 +14,9 @@ Resources:
         Type: Linear10PercentEvery1Minute
         Alarms:
         - Ref: CloudWatchAlarm
+        Hooks:
+          PreTraffic:
+            Ref: HooksLambda
       Events:
         OrderRestAPI:
           Type: Api
@@ -35,3 +38,22 @@ Resources:
       Threshold: 1
       DatapointsToAlarm: 1
       Period: 30
+  HooksLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CodeDeployHook_PreTrafficLambda
+      Handler: hooks.pre
+      Runtime: nodejs16.x
+      CodeUri: HooksLambda
+      Environment:
+        Variables:
+          LambdaCurrentVersion:
+            Ref: MyLambdaFunction.Version
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action: '*'
+          Resource: '*'
+    Metadata:
+      SamResourceId: HooksLambda
