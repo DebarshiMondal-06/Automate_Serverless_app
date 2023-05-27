@@ -9,6 +9,7 @@ module.exports.pre = async (event, context, callback) => {
 
   let deploymentId = event.DeploymentId;
   let lifecycleEventHookExecutionId = event.LifecycleEventHookExecutionId;
+  var lambdaResult = "Failed";
 
 
   // Perform validation of the newly deployed Lambda version
@@ -17,35 +18,22 @@ module.exports.pre = async (event, context, callback) => {
     InvocationType: "RequestResponse",
   };
 
-  var lambdaResult = "Failed";
 
   await lambda.invoke(lambdaParams, function (err, data) {
-    if (err) {
-      console.log(err, err.stack);
-      lambdaResult = "Failed";
-    }
+    if (err) lambdaResult = "Failed";
     else {
       var result = JSON.parse(data.Payload);
-      console.log("Result: " + JSON.stringify(result));
-
-      if (result.bo) {
-        lambdaResult = "Succeeded";
-        console.log("Validation testing succeeded!");
-      }
-      else {
-        lambdaResult = "Failed";
-        console.log("Validation testing failed!");
-      }
+      if (result.body) lambdaResult = "Succeeded";
+      else lambdaResult = "Failed";
     }
   }).promise();
 
-
+  // params for CodeDeploy......
   var params = {
     deploymentId: deploymentId,
     lifecycleEventHookExecutionId: lifecycleEventHookExecutionId,
     status: lambdaResult
   };
-
   console.log('Params:: ', params);
   return codedeploy.putLifecycleEventHookExecutionStatus(params).promise()
     .then(data => callback(null, 'Validation test succeeded'))
@@ -54,6 +42,8 @@ module.exports.pre = async (event, context, callback) => {
 
 
 
+
+// For Post Hook Lambda function.......
 // module.exports.post = (event, context, callback) => {
 //   var deploymentId = event.DeploymentId;
 //   var lifecycleEventHookExecutionId = event.LifecycleEventHookExecutionId;

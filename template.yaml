@@ -10,19 +10,20 @@ Resources:
       Handler: order.handler
       Runtime: nodejs16.x
       CodeUri: functions
-      AutoPublishAlias: live
-      DeploymentPreference:
+      AutoPublishAlias: live #required paramter......
+      DeploymentPreference: #codedeploy configuration for this lambda function......
         Type: Linear10PercentEvery1Minute 
         Alarms:
-          - !Ref CloudWatchAlarm   
+          - !Ref CloudWatchAlarm   #configuring cloudwatch alarms, helps in codedeploy to rollback if errors occurs..... 
         Hooks:
-          PreTraffic: !Ref HooksLambda
+          PreTraffic: !Ref HooksLambda #pre hook configuration......
       Events:
-        OrderRestAPI:
+        OrderRestAPI: #Rest api configuration
           Type: Api
           Properties:
             Method: GET
             Path: /
+
 
   CloudWatchAlarm:
     Type: 'AWS::CloudWatch::Alarm'
@@ -30,15 +31,19 @@ Resources:
       ActionsEnabled: true
       AlarmName: lambda-cloudwatch-alarm
       ComparisonOperator: GreaterThanOrEqualToThreshold
-      EvaluationPeriods: 1
+      EvaluationPeriods: 1 
+      DatapointsToAlarm: 1 #think this like a count, how many numbers of errors, you want to trigger Alarm.....
       MetricName: Errors
       Namespace: AWS/Lambda
+      Threshold: 1 #think like a bar/limit helps in alarm to trigger, if goes beyond the bar......
       Statistic: Minimum
-      Threshold: 1
-      DatapointsToAlarm: 1
-      Period: 30
+      Period: 30 #interval period, if < 60s it will check every 10s but if > 60s will check every 1min.
 
-  
+
+# Follow here to know about cloudwatch metrics in Detials - 
+# https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation
+
+
   HooksLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -48,7 +53,7 @@ Resources:
       CodeUri: hooks
       Environment:
         Variables:
-          LambdaCurrentVersion: !Ref MyLambdaFunction.Version
+          LambdaCurrentVersion: !Ref MyLambdaFunction.Version #to get Current version for our main lambda function.....
       Policies:
         - Version: "2012-10-17"
           Statement:
