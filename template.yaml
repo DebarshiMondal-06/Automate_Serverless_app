@@ -6,17 +6,15 @@ Resources:
   MyLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: "OrderFn"
+      FunctionName: "OrderLambdaFunction"
       Handler: order.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs16.x
       CodeUri: functions
       AutoPublishAlias: live
       DeploymentPreference:
         Type: Linear10PercentEvery1Minute 
         Alarms:
-          - !Ref CloudWatchAlarm
-        Hooks:
-          PreTraffic: !Ref HooksLambda
+          - !Ref CloudWatchAlarm   
       Events:
         OrderRestAPI:
           Type: Api
@@ -40,19 +38,27 @@ Resources:
 
 
 
-  HooksLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: hooks.pre
-      Runtime: nodejs12.x
-      CodeUri: hooks
-      Policies:
-        - AWSLambdaExecute
-        - Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action: "*"
-              Resource: "*"
+
+
+
+   # Hooks:
+        #   PreTraffic: !Ref HooksLambda
+  # HooksLambda:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     FunctionName: CodeDeployHook_PreTrafficLambda
+  #     Handler: hooks.pre
+  #     Runtime: nodejs16.x
+  #     CodeUri: hooks
+  #     Environment:
+  #       Variables:
+  #         LambdaCurrentVersion: !Ref MyLambdaFunction.Version
+  #     Policies:
+  #       - Version: "2012-10-17"
+  #         Statement:
+  #           - Effect: Allow
+  #             Action: "*"
+  #             Resource: "*"
 
 
   

@@ -1,6 +1,7 @@
 const aws = require('aws-sdk');
 const codedeploy = new aws.CodeDeploy({ apiVersion: '2014-10-06' });
 var lambda = new aws.Lambda();
+const LAMBDA_FUNCTION_ARN = process.env.LambdaCurrentVersion;
 
 
 module.exports.pre = async (event, context, callback) => {
@@ -12,8 +13,8 @@ module.exports.pre = async (event, context, callback) => {
 
   // Perform validation of the newly deployed Lambda version
   var lambdaParams = {
-    FunctionName: "OrderFn:4",
-    InvocationType: "RequestResponse"
+    FunctionName: LAMBDA_FUNCTION_ARN,
+    InvocationType: "RequestResponse",
   };
 
   var lambdaResult = "Failed";
