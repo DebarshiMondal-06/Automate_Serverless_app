@@ -15,8 +15,8 @@ Resources:
         Type: Linear10PercentEvery1Minute 
         Alarms:
           - !Ref CloudWatchAlarm   #configuring cloudwatch alarms, helps in codedeploy to rollback if errors occurs..... 
-        Hooks:
-          PreTraffic: !Ref HooksLambda #pre hook configuration......
+        # Hooks:
+        #   PreTraffic: !Ref HooksLambda #pre hook configuration......
       Events:
         OrderRestAPI: #Rest api configuration
           Type: Api
